@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block style %}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  margin-top: 20px;
+  text-align: center;
+  font-family: arial;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Float four columns side by side */
+.column {
+  float: left;
+  width: 25%;
+  padding: 0 10px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+.card-img-top {
+    max-width:200px;
+    height:150px;
+}
+{% endblock %}
+
+{% block content %}
+
+<!--{% if request.user.is_superuser %}-->
+<!--    <h1>Welcome {{ request.user }}</h1>-->
+<!--{% elif request.user.is_authenticated or request.user.isnot_superuser%}-->
+<!--    <h1>Welcome {{user.first_name}} {{user.last_name}}</h1>-->
+<!--{% else %}-->
+<!--    <h1>Hello</h1>-->
+<!--{% endif %}-->
+{% for product in products%}
+<div>
+    <h3>{{ product.0.category}}</h3>
+</div>
+
+
+<div class="row">
+    {% for prod in product %}
+    <div class="column">
+            <div class="card align-items-center" style="width: 18rem;">
+                <img src="/media/{{prod.image}}" alt="..." class="card-img-top">
+                <h4>{{ prod.product_name }}</h4>
+                <p class="price">{{ prod.price }}</p>
+                <p>{{ prod.description }}</p>
+                {% if request.user.is_authenticated %}
+                <form method="POST" action="{% url 'addToCart' %}">{% csrf_token %}
+                    <input type="hidden" name="hidden1" value="{{ prod.id }}">
+                    <button class="btn btn-primary">Add To Cart</button>
+                </form>
+                {% endif %}
+                {% if not request.user.is_authenticated %}
+                <form method="POST" action="{% url 'setSession' %}">{% csrf_token %}
+                    <input type="hidden" name="hidden2" value="{{ prod.id }}">
+                    <button class="btn btn-primary">Add To Cart</button>
+                </form>
+                {% endif %}
+            </div>
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
+
+
+
+{% endblock %}

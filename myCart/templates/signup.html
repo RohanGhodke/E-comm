@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Signup
+{% endblock %}
+
+
+{% block content %}
+<form name="signupForm" action={% url 'handleSignup' %} method="POST" onsubmit="return(validateSignup())"> {% csrf_token %}
+                      <div class="form-group">
+                          <label for="inputFname">First Name</label>
+                          <input type="text" class="form-control" id="fname" placeholder="First Name" name="fname">
+                      </div>
+                      <div class="form-group">
+                          <label for="inputLname">Last Name</label>
+                          <input type="text" class="form-control" id="lname" placeholder="Last Name" name="lname">
+                      </div>
+                      <div class="form-group">
+                          <label for="inputUsername">Username</label>
+                          <input type="text" class="form-control" id="username" placeholder="Username"
+                              name="username">
+                      </div>
+                      <div class="form-group">
+                          <label for="inputEmail">Email address</label>
+                          <input type="email" class="form-control" id="email" placeholder="Email" name="email">
+                      </div>
+                      <div class="form-group">
+                          <label for="inputPassword1">Password</label>
+                          <input type="password" class="form-control" id="password" name="password"
+                              placeholder="Chooser your Password">
+                      </div>
+                      <div class="form-group">
+                          <label for="inputPassword2">Re-enter Password</label>
+                          <input type="password" class="form-control" id="pass2" name="pass2"
+                              placeholder="Enter your password again">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+{% endblock %}

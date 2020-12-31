@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/base/jquery-ui.css"
+      type="text/css" media="all" />
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <title>{% block title %} {% endblock %}</title>
+  <style>
+      {% block style %} {% endblock %}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href={% url 'home' %}>E-comm</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href={% url 'home' %}>Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav mr-2">
+                <li class="nav-item active">
+                    <a class="nav-link" href={% url 'handleLogout' %} id="navbarDropdown">
+                        Logout<span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href={% url 'viewCart' %} id="navbarDropdown">
+                        Cart<span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" id="navbarDropdown">
+                        Your are logged as {{request.user}}<span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+            {% else %}
+            <!-- signup trigger modal -->
+            <a href={% url 'signup' %} type="button" class="btn btn-success mx-2">
+                SignUp
+            </a>
+            <!-- login trigger modal -->
+            <a href={% url 'login' %} type="button" class="btn btn-success mx-2">
+                Login
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</body>
+<script type="text/javascript">
+
+  function validateSignup(){
+
+    var first_name = document.getElementById('fname').value
+    var last_name = document.getElementById('lname').value
+    var password = document.getElementById('password').value
+    var password2 = document.getElementById('pass2').value
+    var email = document.getElementById('email').value
+    var reg = /^([a-zA-Z0-9\.-_]+)@([a-zA-Z0-9-]+).([a-z])$/
+
+
+    if (first_name == null || first_name.trim() == ''){
+      alert('Name cannot be null')
+      return false
+    }else if (last_name == null || last_name.trim() == ''){
+      alert('Name cannot be null')
+      return false
+    }else if (password.length < 5 || password.trim() == ''){
+      alert('Password must have at least 6 characters')
+      return false
+    }else if (password != password2){
+      alert('Passwords do not match')
+      return false
+    }
+    if (reg.test(email)){
+      alert('Invalid email')
+      return false
+    }else{
+      return true
+    }
+  }
+
+</script>
+</html>
